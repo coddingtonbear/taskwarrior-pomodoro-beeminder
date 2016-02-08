@@ -1,0 +1,15 @@
+*.pyc
+bin/*
+lib/*
+src/*
+man/*
+dist/*
+build/*
+docs/build/*
+include/*
+.Python
+*egg*
+share/*
+.tox/*
+.noseids
+pip-selfcheck.json
