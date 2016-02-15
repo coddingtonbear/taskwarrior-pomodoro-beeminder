@@ -1,9 +1,6 @@
 Taskwarrior Pomodoro Beeminder Incrementer
 ==========================================
 
-NOTE: THIS IS A WORK IN PROGRESS!  TASKWARRIOR POMODORO DOES NOT YET
-EVEN SUPPORT EXECUTING THIS COMMAND ON ITS OWN YET!
-
 Usage:
 
 1. Store your Beeminder Personal Authentication Token using:
@@ -12,8 +9,9 @@ Usage:
 taskwarrior-pomodoro-beeminder store_auth_token <username>
 ```
 
-2. Increment your pomodoro using:
+2. Configure [Taskwarrior Pomodoro](https://github.com/coddingtonbear/taskwarrior-pomodoro) to
+   increment your Beeminder goal by entering the following into your ``~/.taskrc``:
 
 ```
-taskwarrior-pomodoro-beeminder increment_goal <username> <goal_slug> [<task_uuid>]
+pomodoro.postCompletionCommand=/usr/local/bin/taskwarrior-pomodoro-beeminder increment_goal <username> <goal slug>
 ```
