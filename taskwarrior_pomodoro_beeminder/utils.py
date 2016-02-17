@@ -20,6 +20,7 @@ def get_task_data(task_id, task_path=None, task_config=None):
             [
                 task_path,
                 'rc:{path}'.format(path=os.path.expanduser(task_config)),
+                'rc.json.array=off',
                 task_id,
                 'export',
             ]
