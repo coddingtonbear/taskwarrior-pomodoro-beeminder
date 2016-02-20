@@ -2,16 +2,11 @@ from __future__ import print_function
 
 import argparse
 import getpass
-import keyring
-import time
 
-import requests
-
-from . import DEFAULTS
+from . import beeminder, DEFAULTS
 from .utils import get_task_data
 
 
-KEYRING_SYSTEM_NAME = "taskwarrior-pomodoro-beeminder"
 COMMANDS = {}
 
 
@@ -21,7 +16,7 @@ def command(fn):
 
 
 @command
-def increment_goal(args):
+def autoincrement(config, args):
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--task-bin',
@@ -31,8 +26,6 @@ def increment_goal(args):
         '--taskrc',
         default=DEFAULTS['taskrc'],
     )
-    parser.add_argument('username')
-    parser.add_argument('goal')
     parser.add_argument('task_id', nargs='?')
     args = parser.parse_args(args)
 
@@ -45,34 +38,42 @@ def increment_goal(args):
     else:
         task_data = {}
 
-    auth_token = keyring.get_password(KEYRING_SYSTEM_NAME, args.username)
-    if not auth_token:
-        raise RuntimeError(
-            "No auth token is currently stored for username {username}; "
-            "store an auth token for {username} using the 'store_auth_token' "
-            "subcommand before attempting to increment this goal.".format(
-                username=args.username,
-            )
-        )
+    matching_targets = config.find_matching_goals(task_data)
 
-    result = requests.post(
-        'https://www.beeminder.com/api/v1/users/{username}'
-        '/goals/{goal}/datapoints.json?auth_token={token}'.format(
-            username=args.username,
-            goal=args.goal,
-            token=auth_token,
-        ),
-        data={
-            'timestamp': int(time.time()),
-            'value': 1,
-            'comment': task_data.get('description', ''),
-        },
-    )
-    result.raise_for_status()
+    message = task_data.get('description', '')
+    for username, goal in matching_targets:
+        beeminder.increment_goal(username, goal, message)
 
 
 @command
-def store_auth_token(args):
+def increment_goal(config, args):
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--task-bin',
+        default=DEFAULTS['task_bin'],
+    )
+    parser.add_argument(
+        '--taskrc',
+        default=DEFAULTS['taskrc'],
+    )
+    parser.add_argument('username')
+    parser.add_argument('goal')
+
+    if args.task_id:
+        task_data = get_task_data(
+            args.task_id,
+            task_path=args.task_bin,
+            task_config=args.taskrc,
+        )
+    else:
+        task_data = {}
+
+    message = task_data.get('description', '')
+    beeminder.increment_goal(args.username, args.goal, message)
+
+
+@command
+def store_auth_token(config, args):
     parser = argparse.ArgumentParser()
     parser.add_argument('username')
     args = parser.parse_args(args)
