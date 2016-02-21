@@ -34,6 +34,10 @@ taskwarrior-pomodoro-beeminder store_auth_token <YOUR BEEMINDER USERNAME>
 [DEFAULT]
 username=<YOUR BEEMINDER USERNAME>
 
+# Each section configures the application to post to a specific goal when
+# a task matches its constraints.  If you do not specify a goal slug,
+# we'll assume that the goal slug in Beeminder matches the section name.
+
 # For incrementing a specific goal for only tasks having specified tags:
 # Note that tags are comma-separated, and *all* tags listed must be present
 # on the given task.  If you would like to increment a given goal when either
@@ -69,10 +73,10 @@ username=coddingtonbear
 [pomodoros]
 
 [pomodoros-mig]
-goal=pomodoros-mig
 tags=MIG
 
 [pomodoros-mig-coursera]
+goal=pomodoros-mig
 project=coursera*
 
 [pomodoros-opensource]
