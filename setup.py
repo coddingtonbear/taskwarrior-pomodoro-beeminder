@@ -27,7 +27,7 @@ except ImportError:
 
 setup(
     name='taskwarrior-pomodoro-beeminder',
-    version='0.1.1',
+    version='0.2.0',
     url='https://github.com/coddingtonbear/taskwarrior-pomodoro-beeminder',
     description=(
         'Increment Beeminder task every time you complete a pomodoro.'
