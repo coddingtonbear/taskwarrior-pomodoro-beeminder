@@ -41,7 +41,7 @@ Configurable Usage
    # For incrementing a specific goal for only tasks having specified tags:
    # Note that tags are comma-separated, and *all* tags listed must be present
    # on the given task.  If you would like to increment a given goal when either
-   # of two tags are present, just create a new section.
+   # of two tags are present, just create a new section having the same goal slug.
    [some-arbitrary-name]
    goal=<YOUR BEEMINDER GOAL SLUG>
    tags=<TAG ONE>,<TAG TWO>
