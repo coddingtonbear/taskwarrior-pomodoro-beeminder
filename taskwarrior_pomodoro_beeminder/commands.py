@@ -6,6 +6,8 @@ import getpass
 from . import beeminder, DEFAULTS
 from .utils import get_task_data
 
+import keyring
+
 
 COMMANDS = {}
 
@@ -93,7 +95,7 @@ def store_auth_token(config, args):
         )
 
     keyring.set_password(
-        KEYRING_SYSTEM_NAME,
+        beeminder.KEYRING_SYSTEM_NAME,
         args.username,
         password
     )
